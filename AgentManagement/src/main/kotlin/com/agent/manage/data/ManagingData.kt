@@ -11,8 +11,8 @@ data class IdolGroup(
     val company: String?,
     val name: String,
     val count: Int,
-    val members:List<String>?,
-    val events: List<Event>?
+    val members:List<String>? = null,
+    val events: List<String>? = null,
 )
 
 data class Event(

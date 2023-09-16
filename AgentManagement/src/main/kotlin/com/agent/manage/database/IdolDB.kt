@@ -12,23 +12,35 @@ class IdolDB {
             BufferedReader(FileReader(file)).use { br ->
                 br.lines().forEach {
                     val str = it.split(",")
-                    val members = str.subList(4, str.size)
+                    var members = listOf<String>()
+                    if(str.size>3){
+                        members = str.subList(4, str.size)
+                    }
                     val data = IdolGroup(str[1], str[2], str[3].toInt(), members, null)
                     idolDB.put(str[0].toInt(), data)
                 }
             }
+            //TODO NULL 처리
         }
 
-//        fun updateIdolFileDB() {
-//            println("CompanyDB updateCompanyFileDB $idolDB")
-//            var fileOut = BufferedWriter(FileWriter("./managementfile/CompanyFile.dat"))
-//            with(fileOut) {
-//                for (index in idolDB.indices) {
-//                    write("${idolDB[index].get("name")},${idolDB[index].get("address")},${idolDB[index].get("callNum")}\n")
-//                    flush()
-//                }
-//                close()
-//            }
-//        }
+        fun updateIdolFileDB() {
+            println("IodlDB updateIodlFileDB $idolDB")
+            var fileOut = BufferedWriter(FileWriter("./managementfile/IdolFile.dat"))
+            with(fileOut) {
+                for (idol in idolDB) {
+                   var str = ""
+                        for (index in idol.value.members!!.indices) {
+                            if(index!=0){
+                                str += ","
+                            }
+                            str += idol.value.members!![index]
+                        }
+                    println(str)
+                    write("${idol.key},${idol.value.company},${idol.value.name},${idol.value.count},${str}\n")
+                    flush()
+                }
+                close()
+            }
+        }
     }
 }

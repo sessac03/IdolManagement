@@ -4,6 +4,7 @@ import com.agent.manage.ConsoleReader
 import com.agent.manage.database.CompanyDB.Companion.getCompanyFileDB
 import com.agent.manage.database.IdolDB.Companion.getIdolFileDB
 import com.agent.manage.management.company.showCompanyMenu
+import com.agent.manage.management.idol.showIdolMenu
 
 fun startManage() {
     getCompanyFileDB()
@@ -22,7 +23,7 @@ fun startManage() {
             }
             // 아이돌 관리
             2 -> {
-//                showIdolMenu()
+                showIdolMenu()
             }
             // 행사 관리
             3 -> {
