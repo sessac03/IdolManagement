@@ -28,6 +28,7 @@ class CompanyManageFun {
             companyHash.put("address", companyInfo[1])
             companyHash.put("callNum", companyInfo[2])
             companyDB.add(companyHash)
+            println("AddCompany 결과: $companyDB")
             updateCompanyFileDB()
         }
     }
@@ -90,15 +91,20 @@ class CompanyManageFun {
     fun deleteCompany() {
         var line: String?
         line = ConsoleReader.consoleScanner()
+        println("companyManageFun deleteCompany $companyDB")
         if (!line.isNullOrEmpty()) {
-            var flag = false
+            var indexDelete = -1
             for (index in companyDB.indices) {
-                if (line == companyDB[index].get("name")) {
-                    companyDB.remove(companyDB[index])
-                    flag = true
+                println(line)
+                if (line.equals(companyDB[index].get("name"))) {
+                    indexDelete = index
+                    break
                 }
             }
-            if (flag == false) {
+            if (indexDelete != -1) {
+                companyDB.removeAt(indexDelete)
+                println("삭제 완료!")
+            } else {
                 println("존재하지 않는 회사입니다.")
             }
         }

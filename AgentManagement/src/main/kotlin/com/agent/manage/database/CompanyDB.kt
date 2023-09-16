@@ -1,14 +1,16 @@
 package com.agent.manage.database
 
+import com.agent.manage.data.CompanyInfo
 import java.io.*
 
 class CompanyDB {
     companion object {
         val companyDB = ArrayList<HashMap<String, String>>()
+        val cfb = HashMap<Int, CompanyInfo>()
         val idolDB = ArrayList<HashMap<String, String>>()
 
+        val file = File("./managementfile/CompanyFile.dat")
         fun getCompanyFileDB(){
-            val file = File("./managementfile/CompanyFile.dat")
             BufferedReader(FileReader(file)).use { br ->
                 br.lines().forEach {
                     val str = it.split(",")
@@ -22,7 +24,7 @@ class CompanyDB {
         }
 
         fun updateCompanyFileDB() {
-
+            println("CompanyDB updateCompanyFileDB $companyDB")
             var fileOut = BufferedWriter(FileWriter("./managementfile/CompanyFile.dat"))
             with(fileOut) {
                 for (index in companyDB.indices) {

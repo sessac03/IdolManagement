@@ -5,8 +5,8 @@ import com.agent.manage.database.CompanyDB.Companion.getCompanyFileDB
 import com.agent.manage.management.company.showCompanyMenu
 
 fun startManage() {
+    getCompanyFileDB()
     while (true) {
-        getCompanyFileDB()
         println("+++++++++++++++++++++++++++++++++++++++++++++++++")
         println("전체 메뉴:    1. 회사 관리    2. 아이돌 관리   3. 행사관리")
         println("+++++++++++++++++++++++++++++++++++++++++++++++++")
