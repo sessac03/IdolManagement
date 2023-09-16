@@ -1,6 +1,6 @@
 package com.agent.manage.main
 
-import com.agent.manage.ConsoleReader
+import com.agent.manage.util.ConsoleReader
 import com.agent.manage.database.CompanyDB.Companion.getCompanyFileDB
 import com.agent.manage.database.EventDB.Companion.getEventFileDB
 import com.agent.manage.database.IdolDB.Companion.getIdolFileDB

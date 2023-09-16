@@ -1,20 +1,21 @@
 package com.agent.manage.management.company
 
-import com.agent.manage.ConsoleReader
+import com.agent.manage.data.CompanyInfo
+import com.agent.manage.util.ConsoleReader
+import com.agent.manage.data.IdolGroup
 import com.agent.manage.database.CompanyDB.Companion.companyDB
 import com.agent.manage.database.CompanyDB.Companion.updateCompanyFileDB
 import com.agent.manage.database.IdolDB.Companion.idolDB
-import kotlin.math.abs
-import kotlin.random.Random
+import com.agent.manage.util.RandomIdGenerator
 
 class CompanyManageFun {
     fun getCompanies() {
-        for (index in companyDB.indices) {
-            println("이름: ${companyDB[index].get("name")}")
-            println("주소: ${companyDB[index].get("address")}")
-            println("연락처: ${companyDB[index].get("callNum")}")
+        for (company in companyDB) {
+            println("이름: ${company.value.name}")
+            println("주소: ${company.value.address}")
+            println("연락처: ${company.value.contactNumber}")
             val idolList = idolDB.filter {
-                it.value.company == companyDB[index].get("name")
+                it.value.company == company.value.name
             }.toList()
             print("아이돌 리스트: ")
             idolList.forEach {
@@ -29,13 +30,10 @@ class CompanyManageFun {
         var line: String?
         line = ConsoleReader.consoleScanner()
         if (!line.isNullOrEmpty()) {
-            val companyInfo = line.split(',')
-            val companyHash = HashMap<String, String>()
-            companyHash.put("id", "${abs(Random.nextInt())}")
-            companyHash.put("name", companyInfo[0])
-            companyHash.put("address", companyInfo[1])
-            companyHash.put("callNum", companyInfo[2])
-            companyDB.add(companyHash)
+            val str = line.split(',')
+            val id = RandomIdGenerator.randomId
+            val data = CompanyInfo(str[0], str[1], str[2])
+            companyDB.put(id, data)
             println("AddCompany 결과: $companyDB")
             updateCompanyFileDB()
         }
@@ -46,23 +44,23 @@ class CompanyManageFun {
         companyName = ConsoleReader.consoleScanner()
         if (!companyName.isNullOrEmpty()) {
             var flag = false
-            for (index in companyDB.indices) {
-                if (companyName == companyDB[index].get("name")) {
+            for (company in companyDB) {
+                if (companyName.equals(company.value.name)) {
+                    flag = true
                     println("[$companyName] 검색결과")
-                    println("이름: ${companyDB[index].get("name")}")
-                    println("주소: ${companyDB[index].get("address")}")
-                    println("연락처: ${companyDB[index].get("callNum")}")
+                    println("이름: ${company.value.name}")
+                    println("주소: ${company.value.address}")
+                    println("연락처: ${company.value.contactNumber}")
                     val idolList = idolDB.filter {
-                        it.value.company == companyDB[index].get("name")
+                        it.value.company == companyName
                     }.toList()
                     print("아이돌 리스트: ")
                     idolList.forEach {
                         print("${it.second.name} ")
                     }
-                    println()
-                    flag = true
                 }
             }
+            println()
             if (flag == false) {
                 println("존재하지 않는 회사입니다.")
             }
@@ -74,11 +72,12 @@ class CompanyManageFun {
         companyName = ConsoleReader.consoleScanner()
         if (!companyName.isNullOrEmpty()) {
             var flag = false
-            var idx = 0
-            for (index in companyDB.indices) {
-                if (companyName == companyDB[index].get("name")) {
-                    idx = index
+            var companyKey = 0
+            for (company in companyDB) {
+                if (companyName.equals(company.value.name)) {
                     flag = true
+                    companyKey = company.key
+                    break
                 }
             }
             if (flag == false) {
@@ -89,29 +88,27 @@ class CompanyManageFun {
             val newData = ConsoleReader.consoleScanner()
             if (!newData.isNullOrEmpty()) {
                 val str = newData.split(",")
-                companyDB[idx].replace("name", str[0])
-                companyDB[idx].replace("address", str[1])
-                companyDB[idx].replace("callNum", str[2])
+                val data = CompanyInfo(str[0], str[1], str[2])
+                companyDB.put(companyKey, data)
+                println("AddCompany 결과: $companyDB")
             }
         }
         updateCompanyFileDB()
     }
 
     fun deleteCompany() {
-        var line: String?
-        line = ConsoleReader.consoleScanner()
-        println("companyManageFun deleteCompany $companyDB")
-        if (!line.isNullOrEmpty()) {
-            var indexDelete = -1
-            for (index in companyDB.indices) {
-                println(line)
-                if (line.equals(companyDB[index].get("name"))) {
-                    indexDelete = index
+        var companyName: String?
+        companyName = ConsoleReader.consoleScanner()
+        if (!companyName.isNullOrEmpty()) {
+            var flag = false
+            for (company in companyDB) {
+                if (companyName.equals(company.value.name)) {
+                    flag = true
+                    companyDB.remove(company.key)
                     break
                 }
             }
-            if (indexDelete != -1) {
-                companyDB.removeAt(indexDelete)
+            if(flag){
                 println("삭제 완료!")
             } else {
                 println("존재하지 않는 회사입니다.")

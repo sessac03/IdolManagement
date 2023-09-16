@@ -1,6 +1,6 @@
 package com.agent.manage.management.company
 
-import com.agent.manage.ConsoleReader
+import com.agent.manage.util.ConsoleReader
 
 fun showCompanyMenu() {
     val companyManage = CompanyManageFun()

@@ -1,4 +1,4 @@
-package com.agent.manage
+package com.agent.manage.util
 
 import java.io.BufferedReader
 import java.io.InputStreamReader
