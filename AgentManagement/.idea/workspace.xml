@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3923f72-eb06-4a69-b60b-d97344f3fef6" name="Changes" comment="" />
+    <list default="true" id="e3923f72-eb06-4a69-b60b-d97344f3fef6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/agent/manage/main/AgentManage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/agent/manage/main/AgentManage.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/agent/manage/management/event/EventManageFun.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/agent/manage/management/event/EventManageFun.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

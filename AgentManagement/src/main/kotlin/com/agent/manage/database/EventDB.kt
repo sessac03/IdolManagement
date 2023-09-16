@@ -20,14 +20,12 @@ class EventDB {
         }
 
         fun updateEventFileDB() {
-            println("EventDB updateEventFileDB $eventDB")
             var fileOut = BufferedWriter(FileWriter("./managementfile/EventFile.dat"))
 
             with(fileOut) {
                 eventDB.forEach {
                     var str: String = ""
                     for (index in it.value.castedGroup!!.indices) {
-                        println("EventDB updateEventFileDB $str")
                         str = str.plus(",")
                         str = str.plus(it.value.castedGroup!![index])
                     }
