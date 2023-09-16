@@ -37,7 +37,7 @@ class EventManageFun {
         eventName = ConsoleReader.consoleScanner()
         if (!eventName.isNullOrEmpty()) {
             println("[$eventName] 검색 결과")
-            EventDB.eventDB.filter {
+            eventDB.filter {
                 it.value.name == eventName
             }.forEach {
                 println("행사명: ${it.value.name}")
@@ -51,13 +51,15 @@ class EventManageFun {
         val eventName: String?
         eventName = ConsoleReader.consoleScanner()
         if (!eventName.isNullOrEmpty()) {
-
+            val key = eventDB.filterValues {
+                it.name == eventName
+            }.keys
             val newData = ConsoleReader.consoleScanner()
             if (!newData.isNullOrEmpty()) {
                 val str = newData.split(",")
                 val groupList = str.subList(2, str.size)
                 val data = Event(str[0], str[1], groupList)
-                eventDB.replace(eventKey, data)
+                eventDB.replace(key, data)
             }
 //            var flag = false
 //            var idx = 0
