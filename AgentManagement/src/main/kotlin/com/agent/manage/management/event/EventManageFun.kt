@@ -11,7 +11,7 @@ import kotlin.random.Random
 
 class EventManageFun {
     fun getEvents() {
-        EventDB.eventDB.forEach { event ->
+        eventDB.forEach { event ->
             println("행사명: ${event.value.name}")
             println("행사 날짜: ${event.value.date}")
             println("출연 아이돌: ${event.value.castedGroup}")
@@ -59,7 +59,7 @@ class EventManageFun {
                 val str = newData.split(",")
                 val groupList = str.subList(2, str.size)
                 val data = Event(str[0], str[1], groupList)
-                eventDB.replace(key, data)
+//                eventDB.replace(key, data)
             }
 //            var flag = false
 //            var idx = 0
