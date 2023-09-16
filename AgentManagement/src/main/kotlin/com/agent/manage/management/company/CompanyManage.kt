@@ -1,9 +1,9 @@
-package com.agent.manage.company
+package com.agent.manage.management.company
 
 import com.agent.manage.ConsoleReader
 
 fun showCompanyMenu() {
-    val companyManage = CompanyManage()
+    val companyManage = CompanyManageFun()
 
     while (true) {
         println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
@@ -15,30 +15,31 @@ fun showCompanyMenu() {
         when (menu) {
             // 회사 조회
             1 -> {
-                val companyList = companyManage.getCompanies()
                 println("[조회 결과]")
-                for (index in companyList.indices) {
-                    println("회사명: ${companyList[index].name}\n주소: ${companyList[index].address}\n연락처: ${companyList[index].contactNumber}\n소속 그룹: ${companyList[index].group}")
-                    println("------------------------------")
-                }
+                println("-----------------------------------")
+                companyManage.getCompanies()
                 break
             }
             // 회사 등록
             2 -> {
+                println("회사명,주소,전화번호 형식으로 입력해주세요.")
                 companyManage.addCompany()
                 break
             }
             // 회사 검색
             3 -> {
+                print("회사명을 입력해주세요: ")
                 companyManage.searchCompany()
                 break
             }
 
             4 -> {
+                print("수정할 회사명을 입력해주세요: ")
                 companyManage.updateCompany()
                 break
             }
             5 -> {
+                print("삭제할 회사명을 입력해주세요: ")
                 companyManage.deleteCompany()
                 break
             }
