@@ -6,8 +6,6 @@ import java.io.*
 class CompanyDB {
     companion object {
         val companyDB = ArrayList<HashMap<String, String>>()
-        val cfb = HashMap<Int, CompanyInfo>()
-        val idolDB = ArrayList<HashMap<String, String>>()
 
         val file = File("./managementfile/CompanyFile.dat")
         fun getCompanyFileDB(){

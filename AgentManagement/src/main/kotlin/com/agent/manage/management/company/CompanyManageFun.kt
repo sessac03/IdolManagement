@@ -2,8 +2,8 @@ package com.agent.manage.management.company
 
 import com.agent.manage.ConsoleReader
 import com.agent.manage.database.CompanyDB.Companion.companyDB
-import com.agent.manage.database.CompanyDB.Companion.idolDB
 import com.agent.manage.database.CompanyDB.Companion.updateCompanyFileDB
+import com.agent.manage.database.IdolDB.Companion.idolDB
 import kotlin.math.abs
 import kotlin.random.Random
 
@@ -13,6 +13,14 @@ class CompanyManageFun {
             println("이름: ${companyDB[index].get("name")}")
             println("주소: ${companyDB[index].get("address")}")
             println("연락처: ${companyDB[index].get("callNum")}")
+            val idolList = idolDB.filter {
+                it.value.company == companyDB[index].get("name")
+            }.toList()
+            print("아이돌 리스트: ")
+            idolList.forEach {
+                print("${it.second.name} ")
+            }
+            println()
             println("-----------------------------------")
         }
     }
@@ -44,13 +52,14 @@ class CompanyManageFun {
                     println("이름: ${companyDB[index].get("name")}")
                     println("주소: ${companyDB[index].get("address")}")
                     println("연락처: ${companyDB[index].get("callNum")}")
-                    println("아이돌 리스트: ${idolDB}")
-                    for (i in idolDB.indices) {
-                        println("[소속 아이돌]")
-                        if (companyName == idolDB[i].get("company")) {
-                            print("${idolDB[i].get("name")} ")
-                        }
+                    val idolList = idolDB.filter {
+                        it.value.company == companyDB[index].get("name")
+                    }.toList()
+                    print("아이돌 리스트: ")
+                    idolList.forEach {
+                        print("${it.second.name} ")
                     }
+                    println()
                     flag = true
                 }
             }

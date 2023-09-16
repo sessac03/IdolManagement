@@ -1,6 +1,5 @@
 package com.agent.manage.data
 
-
 data class CompanyInfo(
     val name: String,
     val address: String,
@@ -9,8 +8,9 @@ data class CompanyInfo(
 )
 
 data class IdolGroup(
-    val company: CompanyInfo?,
+    val company: String?,
     val name: String,
+    val count: Int,
     val members:List<String>?,
     val events: List<Event>?
 )
