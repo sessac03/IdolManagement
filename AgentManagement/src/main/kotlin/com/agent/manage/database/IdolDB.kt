@@ -40,7 +40,8 @@ class IdolDB {
                         memberStr += idol.value.members!![index]
                     }
                     var eventStr = ""
-                    if(idol.value.events!!.isNotEmpty()){
+                    if(idol.value.events!=null){
+                        eventStr +=","
                         for (index in idol.value.events!!.indices) {
                             if (index != 0) {
                                 eventStr += ","
@@ -48,7 +49,7 @@ class IdolDB {
                             eventStr += idol.value.events!![index]
                         }
                     }
-                    write("${idol.key},${idol.value.company},${idol.value.name},${idol.value.count},${memberStr},${eventStr}\n")
+                    write("${idol.key},${idol.value.company},${idol.value.name},${idol.value.count},${memberStr}${eventStr}\n")
                     flush()
                 }
                 close()

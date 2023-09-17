@@ -1,6 +1,6 @@
 package com.agent.manage.data
 
-//파일 입출력하기 쉽게 하려고 List<IdolGroup> 이 아닌 아이돌그룹명으로만 저장함
+//파일 입출력하기 쉽게 하려고 List<IdolGroup> 이 아닌 아이돌그룹명으로만 저장함,,
 data class Company(
     val name: String,
     val address: String,

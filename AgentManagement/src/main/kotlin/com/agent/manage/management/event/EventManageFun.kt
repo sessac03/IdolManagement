@@ -16,7 +16,7 @@ class EventManageFun {
         eventDB.forEach { event ->
             println("행사명: ${event.value.name}")
             println("행사 날짜: ${event.value.date}")
-            println("출연 아이돌: ${event.value.castedGroup}") //TODO 데이터가공
+            println("출연 아이돌: ${event.value.castedGroup}")
             println("-----------------------------------")
         }
     }
@@ -45,7 +45,7 @@ class EventManageFun {
             }.forEach {
                 println("행사명: ${it.value.name}")
                 println("행사 날짜: ${it.value.date}")
-                println("출연 아이돌: ${it.value.castedGroup}") // TODO 데이터가공
+                println("출연 아이돌: ${it.value.castedGroup}")
             }
         }
     }
@@ -103,8 +103,13 @@ class EventManageFun {
         for(group in groupList){
             for(idol in idolDB){
                 if(group == idol.value.name){
-                    var eventList = (idol.value.events as List<String>).toMutableList()
-                    eventList.add(eventName)
+                    var eventList = mutableListOf<String>()
+                    if(idol.value.events != null){
+                        eventList = idol.value.events!!.toMutableList()
+                        eventList.add(eventName)
+                    }else{
+                        eventList.add(eventName)
+                    }
                     val data = IdolGroup(idol.value.company, idol.value.name, idol.value.count,idol.value.members,eventList)
                     idolDB.replace(idol.key,data)
                 }
@@ -117,7 +122,7 @@ class EventManageFun {
         for (idol in idolDB) {
             for (event in idol.value.events as List<String>) {
                 if (eventName == event) {
-                    var eventList = (idol.value.events as List<String>).toMutableList()
+                    var eventList = idol.value.events!!.toMutableList()
                     eventList.remove(event)
                     val data =
                         IdolGroup(idol.value.company, idol.value.name, idol.value.count, idol.value.members, eventList)

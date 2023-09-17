@@ -136,13 +136,13 @@ class IdolManageFun {
                 println("존재하지 않는 그룹명입니다.")
             }
         }
-
+        updateIdolFileDB()
     }
     fun deleteIdolInEventDB(idolName: String){
         for (event in eventDB) {
-            for (idol in event.value.castedGroup as List<String>) {
+            for (idol in event.value.castedGroup) {
                 if (idolName == idol) {
-                    var castedGroup = (event.value.castedGroup as List<String>).toMutableList()
+                    var castedGroup = event.value.castedGroup.toMutableList()
                     castedGroup.remove(idol)
                     val data =
                         Event(event.value.name, event.value.date,castedGroup)
@@ -154,11 +154,16 @@ class IdolManageFun {
        EventDB.updateEventFileDB()
     }
 
-    fun addAndUpdateIdolToCompanyDB(companyName:String, idolName: String){
+    fun addAndUpdateIdolToCompanyDB(companyName:String, idolName: String){ //테스트
         for (company in companyDB) {
             if (companyName == company.value.name) {
-                var groupList = (company.value.group as List<String>).toMutableList()
-                groupList.add(idolName)
+                var groupList = mutableListOf<String>()
+                if(company.value.group != null){
+                    groupList = company.value.group!!.toMutableList()
+                    groupList.add(idolName)
+                }else{
+                    groupList.add(idolName)
+                }
                 val data = Company(company.value.name, company.value.address, company.value.contactNumber, groupList)
                 companyDB.replace(company.key, data)
             }
@@ -171,7 +176,7 @@ class IdolManageFun {
         for (company in companyDB) {
             for (group in company.value.group as List<String>) {
                 if (idolName == group) {
-                    var groupList = (company.value.group as List<String>).toMutableList()
+                    var groupList = company.value.group!!.toMutableList()
                     groupList.remove(idolName)
                     val data = Company(company.value.name, company.value.address, company.value.contactNumber, groupList)
                     companyDB.replace(company.key, data)
