@@ -14,9 +14,13 @@ class IdolDB {
                     val str = it.split(",")
                     var members = listOf<String>()
                     if(str.size>3){
-                        members = str.subList(4, str.size)
+                        members = str.subList(4, str[3].toInt()+4)
                     }
-                    val data = IdolGroup(str[1], str[2], str[3].toInt(), members, null)
+                    var events = listOf<String>()
+                    if(str.size>str[3].toInt()+4){
+                        events = str.subList(str[3].toInt()+4,str.size)
+                    }
+                    val data = IdolGroup(str[1], str[2], str[3].toInt(), members, events)
                     idolDB.put(str[0].toInt(), data)
                 }
             }
@@ -24,23 +28,33 @@ class IdolDB {
         }
 
         fun updateIdolFileDB() {
-            println("IodlDB updateIodlFileDB $idolDB")
+//            println("IodlDB updateIodlFileDB $idolDB")
             var fileOut = BufferedWriter(FileWriter("./managementfile/IdolFile.dat"))
             with(fileOut) {
                 for (idol in idolDB) {
-                   var str = ""
-                        for (index in idol.value.members!!.indices) {
-                            if(index!=0){
-                                str += ","
-                            }
-                            str += idol.value.members!![index]
+                    var memberStr = ""
+                    for (index in idol.value.members!!.indices) {
+                        if (index != 0) {
+                            memberStr += ","
                         }
-                    println(str)
-                    write("${idol.key},${idol.value.company},${idol.value.name},${idol.value.count},${str}\n")
+                        memberStr += idol.value.members!![index]
+                    }
+                    var eventStr = ""
+                    if(idol.value.events!!.isNotEmpty()){
+                        for (index in idol.value.events!!.indices) {
+                            if (index != 0) {
+                                eventStr += ","
+                            }
+                            eventStr += idol.value.events!![index]
+                        }
+                    }
+                    write("${idol.key},${idol.value.company},${idol.value.name},${idol.value.count},${memberStr},${eventStr}\n")
                     flush()
                 }
                 close()
             }
         }
+
+
     }
 }

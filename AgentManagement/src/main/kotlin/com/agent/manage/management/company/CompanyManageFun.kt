@@ -1,11 +1,12 @@
 package com.agent.manage.management.company
 
-import com.agent.manage.data.CompanyInfo
-import com.agent.manage.util.ConsoleReader
+import com.agent.manage.data.Company
 import com.agent.manage.data.IdolGroup
 import com.agent.manage.database.CompanyDB.Companion.companyDB
 import com.agent.manage.database.CompanyDB.Companion.updateCompanyFileDB
+import com.agent.manage.database.IdolDB
 import com.agent.manage.database.IdolDB.Companion.idolDB
+import com.agent.manage.util.ConsoleReader
 import com.agent.manage.util.RandomIdGenerator
 
 class CompanyManageFun {
@@ -14,12 +15,9 @@ class CompanyManageFun {
             println("이름: ${company.value.name}")
             println("주소: ${company.value.address}")
             println("연락처: ${company.value.contactNumber}")
-            val idolList = idolDB.filter {
-                it.value.company == company.value.name
-            }.toList()
             print("아이돌 리스트: ")
-            idolList.forEach {
-                print("${it.second.name} ")
+            company.value.group?.forEach {
+                print("${it} ")
             }
             println()
             println("-----------------------------------")
@@ -32,7 +30,7 @@ class CompanyManageFun {
         if (!line.isNullOrEmpty()) {
             val str = line.split(',')
             val id = RandomIdGenerator.randomId
-            val data = CompanyInfo(str[0], str[1], str[2])
+            val data = Company(str[0], str[1], str[2])
             companyDB.put(id, data)
             println("AddCompany 결과: $companyDB")
             updateCompanyFileDB()
@@ -51,13 +49,11 @@ class CompanyManageFun {
                     println("이름: ${company.value.name}")
                     println("주소: ${company.value.address}")
                     println("연락처: ${company.value.contactNumber}")
-                    val idolList = idolDB.filter {
-                        it.value.company == companyName
-                    }.toList()
                     print("아이돌 리스트: ")
-                    idolList.forEach {
-                        print("${it.second.name} ")
+                    company.value.group?.forEach {
+                        print("${it} ")
                     }
+                    println()
                 }
             }
             println()
@@ -73,10 +69,12 @@ class CompanyManageFun {
         if (!companyName.isNullOrEmpty()) {
             var flag = false
             var companyKey = 0
+            var groups = listOf<String>()
             for (company in companyDB) {
                 if (companyName.equals(company.value.name)) {
                     flag = true
                     companyKey = company.key
+                    groups = company.value.group as List<String>
                     break
                 }
             }
@@ -88,7 +86,7 @@ class CompanyManageFun {
             val newData = ConsoleReader.consoleScanner()
             if (!newData.isNullOrEmpty()) {
                 val str = newData.split(",")
-                val data = CompanyInfo(str[0], str[1], str[2])
+                val data = Company(str[0], str[1], str[2],groups)
                 companyDB.put(companyKey, data)
                 println("AddCompany 결과: $companyDB")
             }
@@ -116,4 +114,5 @@ class CompanyManageFun {
         }
         updateCompanyFileDB()
     }
+ //TODO 소속사가 삭제되면 해당 아이돌들도 삭제되어야 하는가?
 }

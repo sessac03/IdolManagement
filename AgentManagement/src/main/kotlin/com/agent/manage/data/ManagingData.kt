@@ -1,10 +1,11 @@
 package com.agent.manage.data
 
-data class CompanyInfo(
+//파일 입출력하기 쉽게 하려고 List<IdolGroup> 이 아닌 아이돌그룹명으로만 저장함
+data class Company(
     val name: String,
     val address: String,
     val contactNumber: String,
-    val group: List<IdolGroup>? = null
+    val group: List<String>? = null
 )
 
 data class IdolGroup(
@@ -18,11 +19,6 @@ data class IdolGroup(
 data class Event(
     val name:String,
     val date: String,
-    val castedGroup: List<String>?
+    val castedGroup: List<String>
 )
 
-/*
-1,코엑스,2023-09-24,르세라핌,소시
-2,킨텍스,2023-09-30,소대,시대
-1389975548,하하하,2023-10-45,BTS,몬스타엑스
- */

@@ -1,6 +1,6 @@
 package com.agent.manage.management.event
 
-import com.agent.manage.ConsoleReader
+import com.agent.manage.util.ConsoleReader
 
 fun showEventMenu() {
     val eventManage= EventManageFun()

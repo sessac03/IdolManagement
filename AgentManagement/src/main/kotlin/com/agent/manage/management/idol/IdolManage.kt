@@ -1,7 +1,6 @@
 package com.agent.manage.management.idol
 
-import com.agent.manage.ConsoleReader
-import com.agent.manage.management.company.CompanyManageFun
+import com.agent.manage.util.ConsoleReader
 
 fun showIdolMenu() {
     val idolManage = IdolManageFun()

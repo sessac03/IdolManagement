@@ -1,10 +1,13 @@
 package com.agent.manage.management.event
 
-import com.agent.manage.ConsoleReader
+import com.agent.manage.util.ConsoleReader
 import com.agent.manage.data.Event
-import com.agent.manage.database.CompanyDB
+import com.agent.manage.data.IdolGroup
 import com.agent.manage.database.EventDB.Companion.eventDB
 import com.agent.manage.database.EventDB.Companion.updateEventFileDB
+import com.agent.manage.database.IdolDB
+import com.agent.manage.database.IdolDB.Companion.idolDB
+import com.agent.manage.util.RandomIdGenerator
 import kotlin.math.abs
 import kotlin.random.Random
 
@@ -13,7 +16,7 @@ class EventManageFun {
         eventDB.forEach { event ->
             println("행사명: ${event.value.name}")
             println("행사 날짜: ${event.value.date}")
-            println("출연 아이돌: ${event.value.castedGroup}")
+            println("출연 아이돌: ${event.value.castedGroup}") //TODO 데이터가공
             println("-----------------------------------")
         }
     }
@@ -25,7 +28,8 @@ class EventManageFun {
             val eventInfo = line.split(',')
             val groupList = eventInfo.subList(2, eventInfo.size)
             val data = Event(eventInfo[0], eventInfo[1], groupList)
-            eventDB.put(abs(Random.nextInt()), data)
+            addAndUpdateEventToIdolDB(groupList,eventInfo[0])
+            eventDB.put(RandomIdGenerator.randomId, data)
 //            println("AddEvent 결과: ${eventDB}")
             updateEventFileDB()
         }
@@ -41,7 +45,7 @@ class EventManageFun {
             }.forEach {
                 println("행사명: ${it.value.name}")
                 println("행사 날짜: ${it.value.date}")
-                println("출연 아이돌: ${it.value.castedGroup}")
+                println("출연 아이돌: ${it.value.castedGroup}") // TODO 데이터가공
             }
         }
     }
@@ -61,9 +65,10 @@ class EventManageFun {
                 println("수정할 정보를 입력해주세요.(형식: 행사명,행사 날짜(0000-00-00),캐스팅된 아이돌)")
                 val newData = ConsoleReader.consoleScanner()
                 if (!newData.isNullOrEmpty()) {
-                    val str = newData.split(",")
-                    val groupList = str.subList(2, str.size)
-                    val data = Event(str[0], str[1], groupList)
+                    val eventInfo = newData.split(",")
+                    val groupList = eventInfo.subList(2, eventInfo.size)
+                    val data = Event(eventInfo[0], eventInfo[1], groupList)
+                    addAndUpdateEventToIdolDB(groupList,eventInfo[0])
                     eventDB.replace(eventKey, data)
                 }
             } else {
@@ -81,6 +86,7 @@ class EventManageFun {
             for (event in eventDB) {
                 if (eventName == event.value.name) {
                     eventKey = event.key
+                    deleteEventToIdolDB(eventName)
                     break
                 }
             }
@@ -92,4 +98,35 @@ class EventManageFun {
         }
         updateEventFileDB()
     }
+
+    fun addAndUpdateEventToIdolDB(groupList : List<String>, eventName: String){
+        for(group in groupList){
+            for(idol in idolDB){
+                if(group == idol.value.name){
+                    var eventList = (idol.value.events as List<String>).toMutableList()
+                    eventList.add(eventName)
+                    val data = IdolGroup(idol.value.company, idol.value.name, idol.value.count,idol.value.members,eventList)
+                    idolDB.replace(idol.key,data)
+                }
+            }
+        }
+        IdolDB.updateIdolFileDB()
+    }
+
+    fun deleteEventToIdolDB(eventName: String){
+        for (idol in idolDB) {
+            for (event in idol.value.events as List<String>) {
+                if (eventName == event) {
+                    var eventList = (idol.value.events as List<String>).toMutableList()
+                    eventList.remove(event)
+                    val data =
+                        IdolGroup(idol.value.company, idol.value.name, idol.value.count, idol.value.members, eventList)
+                    idolDB.replace(idol.key, data)
+                }
+                //break 해야하나
+            }
+        }
+        IdolDB.updateIdolFileDB()
+    }
+
 }
