@@ -40,5 +40,5 @@ bin/
 
 ### Mac OS ###
 .DS_Store
-.wrokspace.xml
-.misc.xml
+.idea/wrokspace.xml
+.idea/misc.xml
